@@ -12,7 +12,7 @@ def create_daily_note(target_date: date = None) -> str:
     yesterday = target_date - timedelta(days=1)
     tomorrow = target_date + timedelta(days=1)
 
-    filename = f"{target_date}.md"
+    filename = f"{target_date.strftime('%Y-%m-%d')}.md"
 
     content = f"""# {target_date.strftime('%A, %B %d %Y')}
 
@@ -26,7 +26,11 @@ def create_daily_note(target_date: date = None) -> str:
 - 
 """
 
-    with open(filename, "w") as f:
+    if os.path.exists(filename):
+        print(f"Note already exists: {filename}")
+        return filename
+
+    with open(filename, "w", encoding="utf-8") as f:
         f.write(content)
 
     print(f"Created: {filename}")
